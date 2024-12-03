@@ -1,7 +1,7 @@
 <h1>Computer certificate</h1>
 <p>Computer certificate enrollment is the process of issuing digital certificates to computers, including servers and clients, to enable secure communication, verify device identities, and encrypt data exchanges. These certificates are used in various scenarios, such as website access, remote desktop connections, VPNs, Wi-Fi connections, email encryption, and signing documents</p>
 
-<h3>*Installing and setting up Active Directory Certificate Services(ADCS) on Member Server(MS1)</h3>
+<h3>*Installation of Active Directory Certificate Services(ADCS) on Member Server(MS1)</h3>
 
 <p>1. To install Active Directory Certificate Services (AD CS) on Member Server; From the server manager-dashboard, go to Manage > Add roles and features</p>
 <p align="center"><img src="https://i.imgur.com/0mxYiYL.png" height="50%" width="50%" alt="image"/>
@@ -39,7 +39,7 @@
 <p>12. On the Installation Progress page, the feature installation is now shown as completed, click CLOSE.</p>
 <p align="center"><img src="https://i.imgur.com/86OIFXc.png" height="50%" width="50%" alt="image"/>
 
-<h3>*Configuration</h3>
+<h3>*Configuration of ADCS</h3>
 <P>1. On the Server manager-dashboard, click on notification then click on Configure Active Directory, this opens the ADCS Configuration</P>
 <p align="center"><img src="https://i.imgur.com/NidRXW3.png" height="50%" width="50%" alt="image"/>
 
@@ -85,6 +85,7 @@
 <br>
 
 <h2>Creating a GPO to issue the certificate to organization computers on ADDS server</h2>
+
 <p>1. To issue certificates to computers in your organization, you need a GPO for this to work; From Server Manager-dashboard>Tools>Group Policy Management. Right-click Group Policy Object, click New</p>
 <p align="center"><img src="https://i.imgur.com/4rH2Atf.png" height="50%" width="50%" alt="image"/>
 
@@ -118,6 +119,7 @@
 <br>
 
 <h3>*Linking the GPO</h3>
+
 <p>1. Next is to link the GPO. On the Group Policy Management page, right-click on the domain and click on Link an existing GPO</p>
 <p align="center"><img src="https://i.imgur.com/Pimstge.png" height="50%" width="50%" alt="image"/>
 
@@ -130,6 +132,7 @@
 <br>
 
 <h2>Verifying that the certificate is issued</h2>
+
 <p><b>Method 1: Login to any VM in your organization</b></p>
 <p>1. On the member server(MS1), typed Win + R. And typed mmc and click OK</p>
 <p align="center"><img src="https://i.imgur.com/oRsMcTV.png" height="50%" width="50%" alt="image"/>
@@ -168,6 +171,7 @@
 <br>
 
 <h2>Using the issued certificate</h2>
+
 <p>Certificates can be used in various scenarios, such as accessing a website, remote desktop, VPN, Wi-Fi connection, email encryption or signing documents. IPsec (Internet Protocol Security) is a suite of protocols used to secure Internet Protocol (IP) communications. I am going to use the certificates issued to secure the IPsec communication between ADDS server and MS1 server</p>
 <p>1. To create this IPSec rule, do the following; Search for "Windows Firewall with Advanced Security" in Start. Right-Click on Connection Security Rules, then select New Rule</p>
 <p align="center"><img src="https://i.imgur.com/rrdfvUv.png" height="50%" width="50%" alt="image"/>
@@ -206,6 +210,7 @@
  <p align="center"><img src="https://i.imgur.com/u2b0y3q.png" height="50%" width="50%" alt="image"/>  
 
 <p><b>To create the IPSec rule on MS1</b></p>
+
 <p>I repeated the above steps(used in ADDS) on MS1 to create a corresponding IPsec rule that requires authentication using the certificate and specifies ADDS as the remote endpoint (Endpoint2)</p>
 <p align="center"><img src="https://i.imgur.com/Tq3cVrK.png" height="50%" width="50%" alt="image"/>
 <p align="center"><img src="https://i.imgur.com/FjiVv9A.png" height="50%" width="50%" alt="image"/>
@@ -218,6 +223,7 @@
 <p align="center"><img src="https://i.imgur.com/MxRojl0.png" height="50%" width="50%" alt="image"/>
 
 <h3>*Test the connection</h3>
+
 <p>1. To test the connection, I pinged the MS1 from the ADDS</p>
 <p align="center"><img src="https://i.imgur.com/8iXKxUw.png" height="50%" width="50%" alt="image"/>
 
