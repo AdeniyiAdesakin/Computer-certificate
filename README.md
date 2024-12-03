@@ -10,7 +10,7 @@
 <p align="center"><img src="https://i.imgur.com/K3ceoI5.png" height="50%" width="50%" alt="image"/>
 
 <p>3. On the Installation Type screen, make sure the Role-based or feature-based installation is selected, then click NEXT.</p>
-<p align="center"><img src="https://imgur.com/a/Uv4atcr" height="50%" width="50%" alt="image"/>
+<p align="center"><img src="https://i.imgur.com/utddYi3.png" height="50%" width="50%" alt="image"/>
 
 <p>4. On the Select destination server screen, make sure the select a server from the server pool is server is selected and select the server you are trying to install Adds from the server pool, then click NEXT.</p>
 <p align="center"><img src="https://i.imgur.com/Wg9RMPR.png" height="50%" width="50%" alt="image"/>
@@ -103,7 +103,7 @@
 <p>6. Enable the “Renew expired certificates, update pending certificates, and remove revoked certificates” and “Update certificates that use certificate templates” check-boxes, click Apply then OK.</p>
 <p align="center"><img src="https://i.imgur.com/1QKJ4kk.png" height="50%" width="50%" alt="image"/>
 
-<p>7. Back on the Group Policy Management Editor page, go to this path Computer Configuration > Policies > Windows Settings > Security Settings > Public Key Policies. After expanding Public Key Policies, Right-click on Automatic Certificate Request Setting>New>Automatic Certificate Request. This opens up the Setup wizard</p>
+<p>7. Back on the Group Policy Management Editor page, go to this path <b><i>Computer Configuration > Policies > Windows Settings > Security Settings > Public Key Policies. After expanding Public Key Policies, Right-click on Automatic Certificate Request Setting>New>Automatic Certificate Request</i></b>. This opens up the Setup wizard</p>
 <p align="center"><img src="https://i.imgur.com/qIWtPza.png" height="50%" width="50%" alt="image"/>
 
 <p>8. On the Welcome to the  Automatic Certificate Request setup Wizard, click NEXT.</p>
@@ -166,3 +166,70 @@
 <p align="center"><img src="https://i.imgur.com/IfYm5q6.png" height="50%" width="50%" alt="image"/>
 
 <br>
+
+<h2>Using the issued certificate</h2>
+<p>Certificates can be used in various scenarios, such as accessing a website, remote desktop, VPN, Wi-Fi connection, email encryption or signing documents. IPsec (Internet Protocol Security) is a suite of protocols used to secure Internet Protocol (IP) communications. I am going to use the certificates issued to secure the IPsec communication between ADDS server and MS1 server</p>
+<p>1. To create this IPSec rule, do the following; Search for "Windows Firewall with Advanced Security" in Start. Right-Click on Connection Security Rules, then select New Rule</p>
+<p align="center"><img src="https://i.imgur.com/rrdfvUv.png" height="50%" width="50%" alt="image"/>
+
+<p>2. Choose Server to Server and click NEXT</p>
+<p align="center"><img src="https://i.imgur.com/PZl1QRn.png" height="50%" width="50%" alt="image"/>
+
+<p>3. On the Endpoints pages, select These IP Addresses and click Add</p>
+<p align="center"><img src="https://i.imgur.com/ilXNAd6.png" height="50%" width="50%" alt="image"/>
+
+<p>4. On the IP address, input the address, the local endpoint first</p>
+<p align="center"><img src="https://i.imgur.com/I5rwtGl.png" height="50%" width="50%" alt="image"/>
+
+<p>5. Next, put in the address of the remote endpoint and click OK</p>
+<p align="center"><img src="https://i.imgur.com/J8oiQW3.png" height="50%" width="50%" alt="image"/>
+
+<p>6. Back on the Endpoints page, you can see the IP addresses are now added. Click NEXT</p>
+<p align="center"><img src="https://i.imgur.com/VoBh5OA.png" height="50%" width="50%" alt="image"/>
+
+<p>7. On the Requirements page, select “Require authentication for both inbound and outbound connections” and click NEXT</p>
+<p align="center"><img src="https://i.imgur.com/FVsVj2e.png" height="50%" width="50%" alt="image"/>
+
+<p>8. On the Authentication method page, click on Browse.</p>
+<p align="center"><img src="https://i.imgur.com/DmTlRfJ.png" height="50%" width="50%" alt="image"/>
+
+<p>9. The select a certificate opens and the certificate issued on the ADDS is selected, then click OK</p>
+<p align="center"><img src="https://i.imgur.com/P1JYFq7.png" height="50%" width="50%" alt="image"/>
+
+<p>10. Back on the Authentication method page, the certificate issued is now selected, then click NEXT</p>
+<p align="center"><img src="https://i.imgur.com/X8E9JzK.png" height="50%" width="50%" alt="image"/>
+
+<P>11. On the profile page, Domain, Private and Public is selected, click NEXT</P>
+<p align="center"><img src="https://i.imgur.com/i3byren.png" height="50%" width="50%" alt="image"/>
+
+<p>12. On the Name page, name it anything descriptive (e.g "Secure connection between ADDS and MS1"), then click FINISH</p>
+ <p align="center"><img src="https://i.imgur.com/u2b0y3q.png" height="50%" width="50%" alt="image"/>  
+
+<p><b>To create the IPSec rule on MS1</b></p>
+<p>I repeated the above steps(used in ADDS) on MS1 to create a corresponding IPsec rule that requires authentication using the certificate and specifies ADDS as the remote endpoint (Endpoint2)</p>
+<p align="center"><img src="https://i.imgur.com/Tq3cVrK.png" height="50%" width="50%" alt="image"/>
+<p align="center"><img src="https://i.imgur.com/FjiVv9A.png" height="50%" width="50%" alt="image"/>
+
+<h3>*Verifying if the secured connection is established</h3>
+<p>1. To verify the secured connection is established, open powershell and typed in this command <b><i>Get-NetIPsecQuickModeSA</i></b></p>
+<p align="center"><img src="https://i.imgur.com/85xVCPX.png" height="50%" width="50%" alt="image"/>
+
+<p>2. Then another command to verify the secured connection is established <b><i>Get-NetIPsecMainModeSA</i></b></p>
+<p align="center"><img src="https://i.imgur.com/MxRojl0.png" height="50%" width="50%" alt="image"/>
+
+<h3>*Test the connection</h3>
+<p>1. To test the connection, I pinged the MS1 from the ADDS</p>
+<p align="center"><img src="https://i.imgur.com/8iXKxUw.png" height="50%" width="50%" alt="image"/>
+
+<p>2. Downloaded Wireshark, to capture the ESP Packets</p>
+<p align="center"><img src="https://i.imgur.com/FaWFbyU.png" height="50%" width="50%" alt="image"/>
+
+<p>3. Then I disabled the IPSec rule </p>
+<p align="center"><img src="https://i.imgur.com/4BkyhoV.png" height="50%" width="50%" alt="image"/>
+
+<p>4. Opened wireshark and there was no ESP packet anymore</p>
+<p align="center"><img src="https://i.imgur.com/4ejDlG9.png" height="50%" width="50%" alt="image"/>
+
+<br>
+
+
